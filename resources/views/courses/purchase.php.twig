@@ -1,0 +1,60 @@
+{% extends "template.php.twig" %}
+
+{% block content %}
+    {{ include('components/header.html.twig') }}
+
+    <main class="content">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1>{{ course.name }}</h1>
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('courses.index') }}" class=""><button class="btn btn-primary">Visi kursai</button></a>
+            </div>
+        </section>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
+                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-5">
+                        {{ include('components/sidenav.html.twig') }}
+                    </div>
+                </div>
+
+                <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 d-flex justify-content-center mx-auto">
+
+                        <div class="col-lg-6 col-md-12 col-sm-12 d-flex flex-row align-items-center">
+                            <img src="{{ asset('images/courses/' ~ course.cover_image) }}" class="img-fluid d-block col-10 mx-auto my-2" alt="Kurso paveikslelis">
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="col-10 mx-auto">
+                                <h2 class=" text-center bg-secondary text-white font-weight-bold">Kurso Aprašymas</h2>
+                                <p>{{ course.description }}</p>
+
+                                <div class="mt-5 text-center">
+                                    {% if course.price_discount %}
+                                        <div class="mx-auto col-8 border bg-warning text-white mb-3 py-2">
+                                            <h5>Pasiūlymas galioja iki:</h5>
+                                            <h6>{{ course.price_discount_expires ? course.price_discount_expires|date('Y-m-d') }}</h6>
+                                        </div>
+                                        <h4 class="text-danger"><del>{{ course.price }} EUR</del></h4>
+                                        <h1>{{ course.price_discount }} EUR</h1>
+                                    {% else %}
+                                    <h1>{{ course.price }} EUR</h1>
+                                    {% endif %}
+                                </div>
+
+                                <div class="my-5 text-center">
+                                    <a href="{{ route('courses.purchase.payment-method', {'course' : course.id}) }}"><button class="btn btn-success btn-lg px-5 py-3 font-weight-bold">Pirkti kursą</button></a>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{ include('components/footer.html.twig') }}
+{% endblock %}

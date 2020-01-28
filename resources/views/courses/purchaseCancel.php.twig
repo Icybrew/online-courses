@@ -1,0 +1,35 @@
+{% extends "template.php.twig" %}
+
+{% block content %}
+    {{ include('components/header.html.twig') }}
+
+    <main class="content">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1>{{ course.name }}</h1>
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('courses.index') }}" class=""><button class="btn btn-primary">Visi kursai</button></a>
+            </div>
+        </section>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
+                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-5">
+                        {{ include('components/sidenav.html.twig') }}
+                    </div>
+                </div>
+
+                <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+
+                    <h1 class="text-center">Užsakymas atšauktas</h1>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{ include('components/footer.html.twig') }}
+{% endblock %}

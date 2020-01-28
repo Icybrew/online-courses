@@ -1,0 +1,48 @@
+{% extends "template.php.twig" %}
+
+{% block content %}
+
+    <nav class="navbar navbar-dark bg-dark p-0 shadow">
+        <div class="col-2">
+            <a class="navbar-brand" href="{{ route('admin.index') }}"><i class="fa fa-shield mr-3"></i>Administravimas</a>
+        </div>
+        <ul class="navbar-nav ml-auto px-3 d-flex flex-row align-items-center">
+            <li class="nav-item mr-3">
+                <a class="nav-link" href="{{ route('home') }}"><button class="btn btn-outline-success">Pagrindinis</button></a>
+            </li>
+            <li class="nav-item mr-3">
+                <a class="nav-link" href="{{ route('profile.index') }}"><button class="btn btn-outline-info">Profilis</button></a>
+            </li>
+            <li class="nav-item text-nowrap">
+                <form action="{{ route('logout') }}" method="post" class="form-inline">
+                    {{ csrf() }}
+                    <a class="nav-link">
+                        <button class="btn btn-outline-danger" type="submit">Atsijungti<i class="fa fa-sign-out ml-2"></i></button>
+                    </a>
+                </form>
+            </li>
+
+        </ul>
+    </nav>
+
+    <main class="container-fluid">
+        <div class="row">
+            <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12 text-nowrap">
+                <nav class="nav flex-column my-3">
+                    <a class="nav-link active text-dark{{ url().is('admin.statistics.index') ? ' font-weight-bold' }}" href="{{ route('admin.statistics.index') }}">Statistika</a>
+                    <a class="nav-link active text-dark ml-3{{ url().is('admin.videos.index') ? ' font-weight-bold' }}" href="{{ route('admin.videos.index') }}"><i class="fa fa-video-camera mr-1"></i> Video statistika</a>
+                    <a class="nav-link active text-dark ml-3{{ url().is('admin.users.index') ? ' font-weight-bold' }}" href="{{ route('admin.users.index') }}"><i class="fa fa-users mr-1"></i> Mokiniai</a>
+                    <a class="nav-link active text-dark ml-3{{ url().is('admin.statistics.income') ? ' font-weight-bold' }}" href="{{ route('admin.statistics.income') }}"><i class="fa fa-bar-chart mr-1"></i> Apyvarta</a>
+                    <a class="nav-link active text-dark" href="#">Video</a>
+                    <a class="nav-link active text-dark ml-3{{ url().is('admin.videos.create') ? ' font-weight-bold' }}" href="{{ route('admin.videos.create') }}"><i class="fa fa-video-camera mr-1"></i> Patalpinti naują video</a>
+                    <a class="nav-link active text-dark ml-3{{ url().is('admin.courses.create') ? ' font-weight-bold' }}" href="{{ route('admin.courses.create') }}"><i class="fa fa-plus mr-1"></i> Sukurti naują kursą</a>
+                    <a class="nav-link active text-dark ml-3{{ url().is('admin.courses.index') ? ' font-weight-bold' }}" href="{{ route('admin.courses.index') }}"><i class="fa fa-edit mr-1"></i> Redaguoti esamą kursą</a>
+                </nav>
+            </div>
+            <div class="col-xl-10 col-lg-9 col-md-12 col-sm-12">
+                {% block admin_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

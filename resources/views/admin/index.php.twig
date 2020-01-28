@@ -1,0 +1,15 @@
+{% extends "admin/template.php.twig" %}
+
+{% block admin_content %}
+    <div class="">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Administravimas</h1>
+                <p class="lead"><a href="{{ route('admin.google.authorize') }}"><button class="btn btn-primary">Google</button></a></p>
+            </div>
+        </div>
+
+        {% include('components/success.html.twig') %}
+        {% include('components/error.html.twig') %}
+    </div>
+{% endblock %}

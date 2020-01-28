@@ -1,0 +1,69 @@
+{% extends "template.php.twig" %}
+
+{% block content %}
+    {{ include('components/header.html.twig') }}
+
+<main class="content">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1>Specialus pasiūlymas</h1>
+            <p class="lead text-muted mx-auto col-8">
+                Visi kursai tik už <small>499.99 EUR</small>
+                <small class="d-block">Viems naujiems nariams!</small>
+            </p>
+            <p>
+                <a href="{{ route('login') }}" class="btn btn-success btn-lg my-2">Pirkti</a>
+            </p>
+        </div>
+    </section>
+
+    <div class="container-fluid">
+
+        {{ include('components/success.html.twig') }}
+        {{ include('components/error.html.twig') }}
+
+        <div class="row">
+            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
+                <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-5">
+                    {{ include('components/sidenav.html.twig') }}
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 d-flex justify-content-center mx-auto">
+                <div class="album py-5 bg-light">
+                    <div class="container">
+                        <div class="row">
+
+                            {% for course in courses %}
+                                <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                                    <div class="card mb-4 shadow-sm">
+                                        <img src="{{ asset('images/courses/' ~ course.cover_image) }}" class="img-fluid" alt="Kurso paveikslelis">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ course.name }}</h5>
+                                            <p class="card-text">{{ course.description }}</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="mx-auto">
+                                                    {% if course.purchased %}
+                                                        <a href="{{ route('courses.show', {'course' : course.id}) }}"><button class="btn btn-primary">Žiūrėti</button></a>
+                                                    {% else %}
+                                                        <a href="{{ route('courses.purchase', {'course' : course.id}) }}"><button class="btn btn-success">Pirkti</button></a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+    {{ include('components/footer.html.twig') }}
+
+{% endblock %}

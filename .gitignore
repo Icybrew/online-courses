@@ -1,0 +1,18 @@
+/* IDE */
+.idea
+
+/* Composer */
+vendor
+
+/* Node */
+node_modules
+package-lock.json
+
+/* App */
+config/app.php
+config/database.php
+config/google.php
+config/paysera.php
+public/css
+public/js
+public/images/courses/*

@@ -1,0 +1,44 @@
+{% extends "admin/template.php.twig" %}
+
+{% block admin_content %}
+    <div class="mt-5 mx-auto bg-light">
+        <div class="col-7 mx-auto">
+            <div class="row my-5">
+                <div class="col-6">
+                    <div class="card bg-light mb-3">
+                        <h1 class="card-header text-center">Einamasis mėnuo</h1>
+                        <div class="card-body py-5">
+                            <h2 class="card-title text-center text-success">{{ income.month }} €</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card bg-light mb-3">
+                        <h1 class="card-header text-center">Ketvirtis</h1>
+                        <div class="card-body py-5">
+                            <h2 class="card-title text-center text-success">{{ income.quarter }} €</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-5">
+                <div class="col-6">
+                    <div class="card bg-light mb-3">
+                        <h1 class="card-header text-center">Pusmetis</h1>
+                        <div class="card-body py-5">
+                            <h2 class="card-title text-center text-success">{{ income.halfyear }} €</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card bg-light mb-3">
+                        <h1 class="card-header text-center">Einamieji metai</h1>
+                        <div class="card-body py-5">
+                            <h2 class="card-title text-center text-success">{{ income.year }} €</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

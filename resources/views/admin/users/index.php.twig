@@ -1,0 +1,52 @@
+{% extends "admin/template.php.twig" %}
+
+{% block admin_content %}
+    <div class="mt-5 table-responsive">
+
+        {% if success %}
+        <div class="alert alert-success" role="alert">
+            {{ success }}
+        </div>
+        {% endif %}
+        {% if error('error') %}
+        <div class="alert alert-danger" role="alert">
+            {{ error('error') }}
+        </div>
+        {% endif %}
+        <table class="table table-hover text-center">
+            <thead>
+            <tr>
+                <th scope="col">Vardas</th>
+                <th scope="col">E-Paštas</th>
+                <th scope="col">Įsigyjo kursą</th>
+                <th scope="col">Paskutinis apsilankymas</th>
+                <th scope="col">Susisiekti</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+            <tr>
+                <td scope="row"><a href="{{ route('admin.users.show', {'user' : user.id}) }}" class="text-dark">{{ user.firstname }}</a></td>
+                <td>{{ user.email }}</td>
+                {% if user.purchases %}
+                        <td>
+                    {% for purchase in user.purchases %}
+                        <div>{{ purchase.name }}</div>
+                    {% endfor %}
+                        </td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
+                <td>{{ user.last_seen_at }}</td>
+                <td>
+                    <form action="{{ route('admin.users.send-mail', {'user' : user.id}) }}" method="post">
+                        {{ csrf() }}
+                        <button class="btn btn-primary" type="submit">Išssiųsti laišką</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

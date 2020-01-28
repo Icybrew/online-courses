@@ -1,0 +1,26 @@
+<header>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center">
+                <strong>Online Courses</strong>
+            </a>
+            <div>
+                {% if auth() %}
+                    <form action="{{ route('logout') }}" method="post" class="d-flex align-items-center">
+                        {{ csrf() }}
+                        {% if auth().role == 'Admin' %}
+                        <a href="{{ route('admin.index') }}"><button class="btn btn-primary mr-3" type="button">Admin</button></a>
+                        {% endif %}
+                        <a href="{{ route('profile.index') }}"><button class="btn btn-info mr-3" type="button">Profilis</button></a>
+                        <button class="btn btn-danger" type="submit">Atsijungti</button>
+                    </form>
+                {% else %}
+                    <div class="my-1">
+                        <a href="{{ route('login') }}" class="btn btn-primary mr-1">Prisijungimas<i class="fa fa-sign-in ml-1"></i></a>
+                        <a href="{{ route('register') }}" class="btn btn-secondary ml-2">Registracija<i class="fa fa-user-plus ml-2"></i></a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>

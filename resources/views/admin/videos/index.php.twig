@@ -1,0 +1,21 @@
+{% extends "admin/template.php.twig" %}
+
+{% block admin_content %}
+    <div class="mt-5 col-10 mx-auto">
+        <ul class="list-group">
+            {% for video in videos %}
+                <li class="list-group-item my-1 col-10 mx-auto">
+                    <div class="row">
+                        <div class="col-6 embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.video_id }}" allowfullscreen></iframe>
+                        </div>
+                        <div class="col-6">
+                            <div>Peržiūrėta: {{ video.view_count }} kartų</div>
+                            <div>Įkelta: {{ video.created_at }}</div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

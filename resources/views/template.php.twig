@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Defaults -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title> {{ title }}</title>
+
+    <!-- Paysera -->
+    <meta name="verify-paysera" content="e008643a1e2cafe8a7d2eb304f110a24">
+    <script type="text/javascript" charset="utf-8">
+        var wtpQualitySign_projectId  = 161618;
+        var wtpQualitySign_language   = "lt";
+    </script>
+{#    <script src="https://bank.paysera.com/new/js/project/wtpQualitySigns.js" type="text/javascript" charset="utf-8"></script>#}
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <!-- Javascript -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+</head>
+<body>
+{% block content %}{% endblock %}
+</body>
+</html>

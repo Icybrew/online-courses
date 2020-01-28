@@ -1,0 +1,74 @@
+{% extends "template.php.twig" %}
+
+{% block content %}
+    {{ include('components/header.html.twig') }}
+
+    <main class="content">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1>{{ course.name }}</h1>
+            </div>
+        </section>
+
+        <div class="container-fluid mb-5">
+            <div class="row">
+                <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
+                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-5">
+                        {{ include('components/sidenav.html.twig') }}
+                    </div>
+                </div>
+
+                <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+
+                    <div class="col-8 mx-auto mb-5">
+                        <div class="row">
+                            <div class="col-6">
+                                <img src="{{ asset('images/courses/' ~ course.cover_image) }}" alt="Kurso paveikslėlis" class="img-thumbnail">
+                            </div>
+                            <div class="col-6 border d-flex flex-row align-items-center justify-content-center">
+                                <div>
+                                    <h3 class="text-center">{{ course.name }}</h3>
+                                    <h2 class="text-center text-success">{{ course.price_discount ? course.price_discount : course.price }} EUR</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <form action="{{ route('courses.purchase.confirm', {'course' : course.id}) }}" method="post">
+                            {{ csrf() }}
+                            <div class="col-8 mx-auto">
+                                    <h1 class="text-center">Pasirinkite mokėjimo būdą:<span class="text-danger">*</span></h1>
+                                    <div class="row">
+                                        {% for paymentMethod in methods.getCountry('lt').getPaymentMethods() %}
+                                            <div class="col-4 mb-2">
+                                                <div class="card">
+                                                    <label>
+                                                        <div class="card-header">
+                                                            <img src="{{ paymentMethod.getLogoUrl() }}" class="card-img" alt="{{ paymentMethod.getTitle() }}">
+                                                            <div class="text-center">{{ paymentMethod.getTitle() }}</div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div>
+                                                                <input class="form-check-input position-static d-block mx-auto" type="radio" name="payment-method" value="{{ paymentMethod.getkey() }}" aria-label="{{ paymentMethod.getTitle() }}" required>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                            </div>
+
+                            <div class="text-center my-5">
+                                <button class="btn btn-lg btn-success" type="submit">Apmokėti</button>
+                            </div>
+                        </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{ include('components/footer.html.twig') }}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "admin/template.php.twig" %}
+
+{% block admin_content %}
+    <div class="mt-5">
+        <table class="table table-hover text-nowrap mx-auto col-xl-5 col-lg-8 col-md-10 col-sm-12">
+            <tbody>
+            <tr>
+                <th class="text-right">Vardas</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Pavardė</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">E-Paštas</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Užsiregistravo</th>
+                <td>{{ user.created_at }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Paskutinis apsilankymas</th>
+                <td>{{ user.last_seen_at }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="{{ route('admin.users.index') }}"><button class="btn btn-primary">&larr; Visi vartotojai</button></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "template.php.twig" %}
+
+{% block content %}
+
+    {{ include('components/header.html.twig') }}
+
+<main class="content">
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1>Mokėjimai</h1>
+        </div>
+    </section>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
+                <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-5">
+                    {{ include('components/sidenav.html.twig') }}
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 justify-content-center mx-auto my-5 container">
+                <div class="shadow border rounded col-xl-10 col-lg-12 col-md-12 col-sm-12 mx-auto pb-3">
+                    {% if purchases %}
+                    <table class="table">
+                        <thead>
+                        <tr class="text-center">
+                            <th scope="col" class="col-4">Pavadinimas</th>
+                            <th scope="col" class="col-2">Kaina</th>
+                            <th scope="col" class="col-3">Data</th>
+                            <th scope="col" class="col-3">Sąskaitos faktūra</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for purchase in purchases %}
+                        <tr class="text-center">
+                            <td><a href="{{ route('courses.show', {'course' : purchase.course_id}) }}" class="text-dark">{{ purchase.name }}</a></td>
+                            <td>{{ purchase.price }} EUR</td>
+                            <td>{{ purchase.created_at }}</td>
+                            <td><a href="#"><button class="btn btn-outline-info">PDF</button></a></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <h1 class="text-center mt-5">Mokėjimų nėra</h1>
+                    {% endif %}
+                    <div class="d-flex flex-row mt-3">
+                        <div class="mr-auto">
+                            <a href="{{ route('profile.index') }}"><button class="btn btn-primary">&larr; Profilis</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+    {{ include('components/footer.html.twig') }}
+
+{% endblock %}

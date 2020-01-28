@@ -1,0 +1,16 @@
+<nav class="nav flex-column text-nowrap">
+    <a class="nav-link px-0 text-dark{{ url().is('courses.index') ? ' font-weight-bold' }}" data-toggle="collapse" href="#coursesNavLink" role="button" aria-expanded="{{ url().is('courses.index') ? 'true' : 'false' }}" aria-controls="coursesNavLink">Video pamokos</a>
+    <div class="collapse{{ url().is('courses.index') ? ' show' }}" id="coursesNavLink">
+        {% for course in courses %}
+            <a class="nav-link text-dark" href="{{ route('courses.show', {'course' : course.id}) }}">{{ course.purchased ? '<i class="fa fa-unlock mr-2"></i>' : '<i class="fa fa-lock mr-2"></i>' }}{{ course.name }}</a>
+        {% endfor %}
+    </div>
+    {% if auth() %}
+    <a class="nav-link px-0 text-dark{{ url().is('profile.index') ? ' font-weight-bold' }}" data-toggle="collapse" href="#profileNavLink" role="button" aria-expanded="{{ url().is('profile.index') ? 'true' : 'false' }}" aria-controls="profileNavLink">Asmeninė informacija</a>
+    <div class="collapse{{ (url().is('profile.index') or url().is('profile.edit.password') or url().is('profile.purchases')) ? ' show' }}" id="profileNavLink">
+        <a class="nav-link text-dark{{ url().is('profile.edit.password') ? ' font-weight-bold' }}" href="{{ route('profile.edit.password') }}">Pakeisti slaptažodį</a>
+        <a class="nav-link text-dark{{ url().is('profile.purchases') ? ' font-weight-bold' }}" href="{{ route('profile.purchases') }}">Mano informaciją</a>
+    </div>
+    {% endif %}
+    <a class="nav-link px-0 text-dark{{ url().is('home') ? ' font-weight-bold' }}" href="{{ route('home') }}">Naujienos</a>
+</nav>
