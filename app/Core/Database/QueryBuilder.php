@@ -44,9 +44,9 @@ class QueryBuilder
     protected $transactionCount = 0;
 
 
-
-    public function __construct($connection) {
-        $this->pdo = $connection;
+    public function __construct()
+    {
+        $this->pdo = app(Database::class)->getConnection();
     }
 
     public function from($table)
@@ -80,35 +80,35 @@ class QueryBuilder
 
     public function max($field, $name = null)
     {
-        $func = 'MAX(' . $field . ')' . (! is_null($name) ? ' AS ' . $name : '');
+        $func = 'MAX(' . $field . ')' . (!is_null($name) ? ' AS ' . $name : '');
         $this->select = ($this->select == '*' ? $func : $this->select . ', ' . $func);
         return $this;
     }
 
     public function min($field, $name = null)
     {
-        $func = 'MIN(' . $field . ')' . (! is_null($name) ? ' AS ' . $name : '');
+        $func = 'MIN(' . $field . ')' . (!is_null($name) ? ' AS ' . $name : '');
         $this->select = ($this->select == '*' ? $func : $this->select . ', ' . $func);
         return $this;
     }
 
     public function sum($field, $name = null)
     {
-        $func = 'SUM(' . $field . ')' . (! is_null($name) ? ' AS ' . $name : '');
+        $func = 'SUM(' . $field . ')' . (!is_null($name) ? ' AS ' . $name : '');
         $this->select = ($this->select == '*' ? $func : $this->select . ', ' . $func);
         return $this;
     }
 
     public function count($field, $name = null)
     {
-        $func = 'COUNT(' . $field . ')' . (! is_null($name) ? ' AS ' . $name : '');
+        $func = 'COUNT(' . $field . ')' . (!is_null($name) ? ' AS ' . $name : '');
         $this->select = ($this->select == '*' ? $func : $this->select . ', ' . $func);
         return $this;
     }
 
     public function avg($field, $name = null)
     {
-        $func = 'AVG(' . $field . ')' . (! is_null($name) ? ' AS ' . $name : '');
+        $func = 'AVG(' . $field . ')' . (!is_null($name) ? ' AS ' . $name : '');
         $this->select = ($this->select == '*' ? $func : $this->select . ', ' . $func);
         return $this;
     }
@@ -117,8 +117,8 @@ class QueryBuilder
     {
         $on = $field1;
         $table = $this->prefix . $table;
-        if (! is_null($op)) {
-            $on = (! in_array($op, $this->op) ? $field1 . ' = ' . $op : $field1 . ' ' . $op . ' ' . $field2);
+        if (!is_null($op)) {
+            $on = (!in_array($op, $this->op) ? $field1 . ' = ' . $op : $field1 . ' ' . $op . ' ' . $field2);
         }
         $this->join = (is_null($this->join))
             ? ' ' . $type . 'JOIN' . ' ' . $table . ' ON ' . $on
@@ -164,7 +164,7 @@ class QueryBuilder
 
     public function where($where, $op = null, $val = null, $type = '', $andOr = 'AND')
     {
-        if (is_array($where) && ! empty($where)) {
+        if (is_array($where) && !empty($where)) {
             $_where = [];
             foreach ($where as $column => $data) {
                 $_where[] = $type . $column . '=' . $this->escape($data);
@@ -178,12 +178,12 @@ class QueryBuilder
                 $params = explode('?', $where);
                 $_where = '';
                 foreach ($params as $key => $value) {
-                    if (! empty($value)) {
+                    if (!empty($value)) {
                         $_where .= $type . $value . (isset($op[$key]) ? $this->escape($op[$key]) : '');
                     }
                 }
                 $where = $_where;
-            } elseif (! in_array($op, $this->op) || $op == false) {
+            } elseif (!in_array($op, $this->op) || $op == false) {
                 $where = $type . $where . ' = ' . $this->escape($op);
             } else {
                 $where = $type . $where . ' ' . $op . ' ' . $this->escape($val);
@@ -346,7 +346,7 @@ class QueryBuilder
 
     public function limit($limit, $limitEnd = null)
     {
-        $this->limit = (! is_null($limitEnd))
+        $this->limit = (!is_null($limitEnd))
             ? $limit . ', ' . $limitEnd
             : $limit;
         return $this;
@@ -367,7 +367,7 @@ class QueryBuilder
 
     public function orderBy($orderBy, $orderDir = null)
     {
-        if (! is_null($orderDir)) {
+        if (!is_null($orderDir)) {
             $this->orderBy = $orderBy . ' ' . strtoupper($orderDir);
         } else {
             $this->orderBy = (stristr($orderBy, ' ') || $orderBy == 'rand()')
@@ -391,12 +391,12 @@ class QueryBuilder
             $fields = explode('?', $field);
             $where = '';
             foreach ($fields as $key => $value) {
-                if (! empty($value)) {
+                if (!empty($value)) {
                     $where .= $value . (isset($op[$key]) ? $this->escape($op[$key]) : '');
                 }
             }
             $this->having = $where;
-        } elseif (! in_array($op, $this->op)) {
+        } elseif (!in_array($op, $this->op)) {
             $this->having = $field . ' > ' . $this->escape($op);
         } else {
             $this->having = $field . ' ' . $op . ' ' . $this->escape($val);
@@ -428,35 +428,35 @@ class QueryBuilder
     public function get($type = null, $argument = null)
     {
         $this->limit = 1;
-        $query = $this->getAll(true);
+        $query = $this->all(true);
         if ($type === true) {
             return $query;
         }
         return $this->query($query, false, $type, $argument);
     }
 
-    public function getAll($type = null, $argument = null)
+    public function All($type = null, $argument = null)
     {
         $query = 'SELECT ' . $this->select . ' FROM ' . $this->from;
-        if (! is_null($this->join)) {
+        if (!is_null($this->join)) {
             $query .= $this->join;
         }
-        if (! is_null($this->where)) {
+        if (!is_null($this->where)) {
             $query .= ' WHERE ' . $this->where;
         }
-        if (! is_null($this->groupBy)) {
+        if (!is_null($this->groupBy)) {
             $query .= ' GROUP BY ' . $this->groupBy;
         }
-        if (! is_null($this->having)) {
+        if (!is_null($this->having)) {
             $query .= ' HAVING ' . $this->having;
         }
-        if (! is_null($this->orderBy)) {
+        if (!is_null($this->orderBy)) {
             $query .= ' ORDER BY ' . $this->orderBy;
         }
-        if (! is_null($this->limit)) {
+        if (!is_null($this->limit)) {
             $query .= ' LIMIT ' . $this->limit;
         }
-        if (! is_null($this->offset)) {
+        if (!is_null($this->offset)) {
             $query .= ' OFFSET ' . $this->offset;
         }
         if ($type === true) {
@@ -492,7 +492,12 @@ class QueryBuilder
         return false;
     }
 
-    public function update(array $data, $type = false)
+    public function update($id, array $data, $type = false)
+    {
+        return $this->where('id', '=', $id)->updateAll($data, $type);
+    }
+
+    public function updateAll(array $data, $type = false)
     {
         $query = 'UPDATE ' . $this->from . ' SET ';
         $values = [];
@@ -500,13 +505,13 @@ class QueryBuilder
             $values[] = $column . '=' . $this->escape($val);
         }
         $query .= implode(',', $values);
-        if (! is_null($this->where)) {
+        if (!is_null($this->where)) {
             $query .= ' WHERE ' . $this->where;
         }
-        if (! is_null($this->orderBy)) {
+        if (!is_null($this->orderBy)) {
             $query .= ' ORDER BY ' . $this->orderBy;
         }
-        if (! is_null($this->limit)) {
+        if (!is_null($this->limit)) {
             $query .= ' LIMIT ' . $this->limit;
         }
         if ($type === true) {
@@ -518,13 +523,13 @@ class QueryBuilder
     public function delete($type = false)
     {
         $query = 'DELETE FROM ' . $this->from;
-        if (! is_null($this->where)) {
+        if (!is_null($this->where)) {
             $query .= ' WHERE ' . $this->where;
         }
-        if (! is_null($this->orderBy)) {
+        if (!is_null($this->orderBy)) {
             $query .= ' ORDER BY ' . $this->orderBy;
         }
-        if (! is_null($this->limit)) {
+        if (!is_null($this->limit)) {
             $query .= ' LIMIT ' . $this->limit;
         }
         if ($query == 'DELETE FROM ' . $this->from) {
@@ -563,7 +568,7 @@ class QueryBuilder
 
     public function transaction()
     {
-        if (! $this->transactionCount++) {
+        if (!$this->transactionCount++) {
             return $this->pdo->beginTransaction();
         }
         $this->pdo->exec('SAVEPOINT trans' . $this->transactionCount);
@@ -572,7 +577,7 @@ class QueryBuilder
 
     public function commit()
     {
-        if (! --$this->transactionCount) {
+        if (!--$this->transactionCount) {
             return $this->pdo->commit();
         }
         return $this->transactionCount >= 0;
@@ -606,7 +611,7 @@ class QueryBuilder
             return null;
         }
         $query = $this->pdo->query($this->query);
-        if (! $query) {
+        if (!$query) {
             $this->error = $this->pdo->errorInfo()[2];
             $this->error();
         }
@@ -626,7 +631,8 @@ class QueryBuilder
         return $this->fetch($type, $argument, true);
     }
 
-    public function find($id) {
+    public function find($id)
+    {
         return $this->where('id', '=', $id)->get();
     }
 
@@ -637,7 +643,7 @@ class QueryBuilder
             $params = explode('?', $query);
             $newQuery = '';
             foreach ($params as $key => $value) {
-                if (! empty($value)) {
+                if (!empty($value)) {
                     $newQuery .= $value . (isset($all[$key]) ? $this->escape($all[$key]) : '');
                 }
             }
@@ -654,10 +660,10 @@ class QueryBuilder
         }
         $type = $this->getFetchType($type);
         $cache = false;
-        if (! is_null($this->cache) && $type !== PDO::FETCH_CLASS) {
+        if (!is_null($this->cache) && $type !== PDO::FETCH_CLASS) {
             $cache = $this->cache->getCache($this->query, $type === PDO::FETCH_ASSOC);
         }
-        if (! $cache && $str) {
+        if (!$cache && $str) {
             $sql = $this->pdo->query($this->query);
             if ($sql) {
                 $this->numRows = $sql->rowCount();
@@ -669,7 +675,7 @@ class QueryBuilder
                     }
                     $this->result = $all ? $sql->fetchAll() : $sql->fetch();
                 }
-                if (! is_null($this->cache) && $type !== PDO::FETCH_CLASS) {
+                if (!is_null($this->cache) && $type !== PDO::FETCH_CLASS) {
                     $this->cache->setCache($this->query, $this->result);
                 }
                 $this->cache = null;
@@ -678,7 +684,7 @@ class QueryBuilder
                 $this->error = $this->pdo->errorInfo()[2];
                 $this->error();
             }
-        } elseif ((! $cache && ! $str) || ($cache && ! $str)) {
+        } elseif ((!$cache && !$str) || ($cache && !$str)) {
             $this->cache = null;
             $this->result = $this->pdo->exec($this->query);
             if ($this->result === false) {

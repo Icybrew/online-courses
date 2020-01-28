@@ -23,7 +23,7 @@ class StatisticsController extends Controller
         $purchases = Order::select('*')
             ->join('courses', 'courses.id', '=', 'orders.course_id')
             ->join('users', 'users.id', '=', 'orders.user_id')
-            ->getAll();
+            ->all();
 
         $income = new \stdClass();
 
@@ -33,8 +33,8 @@ class StatisticsController extends Controller
         $income->year = 0;
 
         // TODO refactor income statistics
-        //dd(UserCourse::select('*')->between('MONTH(purchased_at)', 1, 1)->getAll());
-        //dd(UserCourse::select('*, YEAR(current_date) as year')->where('YEAR(purchased_at)', '=', 'YEAR(current_date)')->getAll());
+        //dd(UserCourse::select('*')->between('MONTH(purchased_at)', 1, 1)->all());
+        //dd(UserCourse::select('*, YEAR(current_date) as year')->where('YEAR(purchased_at)', '=', 'YEAR(current_date)')->all());
 
         $lastmonth = date('Y-m-d H:i:s', strtotime("-1 months"));
         $lastQuarter = date('Y-m-d H:i:s', strtotime("-3 months"));

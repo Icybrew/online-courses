@@ -9,7 +9,6 @@ use App\Order;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\User;
-use App\UserCourse;
 
 
 /**
@@ -27,7 +26,7 @@ class ProfileController extends Controller
         $user = $request->getSession()->get('user');
 
         if (!is_null($user)) {
-            $userOrders = Order::where('user_id', '=', $user->id)->getAll();
+            $userOrders = Order::where('user_id', '=', $user->id)->all();
 
             array_walk($courses, function ($course) use ($userOrders) {
                 $purchased = current(array_filter($userOrders, function ($userCourse) use ($course) {
@@ -91,7 +90,7 @@ class ProfileController extends Controller
     public function purchases(Request $request)
     {
         $user = $request->getSession()->get('user');
-        $purchases = Order::select('orders.*, courses.name')->where('user_id', '=', $user->id)->join('courses', 'courses.id', '=', 'orders.course_id')->groupBy('orders.id')->getAll();
+        $purchases = Order::select('orders.*, courses.name')->where('user_id', '=', $user->id)->join('courses', 'courses.id', '=', 'orders.course_id')->groupBy('orders.id')->all();
 
         return view('profile/purchases', ['purchases' => $purchases]);
     }

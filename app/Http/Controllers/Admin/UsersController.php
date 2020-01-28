@@ -19,11 +19,11 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::select('*')
-            ->getAll();
+            ->all();
 
         $purchases = Order::select('*')
             ->join('courses', 'courses.id', '=', 'orders.course_id')
-            ->getAll();
+            ->all();
 
         array_walk($users, function ($user) use (&$purchases) {
             $user->purchases = [];

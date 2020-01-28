@@ -12,10 +12,16 @@ use PDO;
  */
 class Database
 {
-    protected $pdo;
 
-    protected $error;
+    /**
+     * Database connection
+     * @var PDO
+     */
+    protected $connection;
 
+    /**
+     * Database constructor.
+     */
     public function __construct()
     {
         $hostname = Config::get('database', 'hostname');
@@ -31,18 +37,40 @@ class Database
 
         $dsn = "mysql:host=$hostname;dbname=$database;charset=$charset";
 
-        $this->pdo = new PDO($dsn, $username, $password, $options);
+        $this->connection = new PDO($dsn, $username, $password, $options);
     }
 
-    public function queryRaw($query)
+    public function getConnection()
     {
-        $statement = $this->pdo->query($query);
+        return $this->connection;
+    }
+
+    /**
+     * @param string $table
+     * @return QueryBuilder
+     */
+    public function table(string $table): QueryBuilder
+    {
+        return (new QueryBuilder())->from($table);
+    }
+
+    /**
+     * @param string $query
+     * @return \PDOStatement|null
+     */
+    public function queryRaw(string $query): ?\PDOStatement
+    {
+        $statement = $this->connection->query($query);
         return $statement;
     }
 
-    public function queryObject($query)
+    /**
+     * @param string $query
+     * @return \App\Core\Support\Collection|mixed
+     */
+    public function queryObject(string $query)
     {
-        $statement = $this->pdo->query($query);
+        $statement = $this->connection->query($query);
 
         if ($statement->rowCount() <= 1) {
             return $statement->fetchObject();
@@ -51,14 +79,18 @@ class Database
         }
     }
 
-    public function queryArray($query)
+    /**
+     * @param string $query
+     * @return \App\Core\Support\Collection|mixed
+     */
+    public function queryArray(string $query)
     {
-        $statement = $this->pdo->query($query);
+        $statement = $this->connection->query($query);
 
         if ($statement->rowCount() <= 1) {
             return $statement->fetch();
         } else {
-            return $statement->fetchAll();
+            return collect($statement->fetchAll());
         }
     }
 }

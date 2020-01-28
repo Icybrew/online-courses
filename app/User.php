@@ -10,8 +10,8 @@ use App\Core\Database\Model;
  */
 class User extends Model
 {
-    protected static $table = "users";
+    protected $table = "users";
 
-    protected static $primary_key = "id";
+    protected $primary_key = "id";
 
 }

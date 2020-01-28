@@ -22,12 +22,12 @@ class CoursesController extends Controller
     public function __construct(Request $request)
     {
         parent::__construct();
-        $this->courses = Course::where('public', '=', 1)->getAll();
+        $this->courses = Course::where('public', '=', 1)->all();
 
         $user = $request->getSession()->get('user');
 
         if (!is_null($user)) {
-            $userOrders = Order::where('user_id', '=', $user->id)->getAll();
+            $userOrders = Order::where('user_id', '=', $user->id)->all();
 
             array_walk($this->courses, function ($course) use ($userOrders) {
                 $purchased = current(array_filter($userOrders, function ($userCourse) use ($course) {
@@ -55,7 +55,7 @@ class CoursesController extends Controller
         if (!empty($course)) {
 
             if (isset($course->purchased) && $course->purchased) {
-                $course->videos = CourseVideo::where('course_id', '=', $course->id)->orderBy("'order'")->getAll();
+                $course->videos = CourseVideo::where('course_id', '=', $course->id)->orderBy("'order'")->all();
                 return view('courses/course', ['course' => $course]);
             } else {
                 return redirect()->route('courses.purchase', ['course' => $course->id]);

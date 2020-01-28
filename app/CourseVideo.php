@@ -10,7 +10,7 @@ use App\Core\Database\Model;
  */
 class CourseVideo extends Model
 {
-    protected static $table = "course_videos";
+    protected $table = "course_videos";
 
-    protected static $primary_key = "id";
+    protected $primary_key = "id";
 }
