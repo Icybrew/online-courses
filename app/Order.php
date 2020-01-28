@@ -11,7 +11,7 @@ use App\Core\Database\Model;
  */
 class Order extends Model
 {
-    protected static $table = "orders";
+    protected $table = "orders";
 
-    protected static $primary_key = "id";
+    protected $primary_key = "id";
 }

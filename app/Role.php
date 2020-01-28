@@ -10,7 +10,7 @@ use App\Core\Database\Model;
  */
 class Role extends Model
 {
-    protected static $table = "roles";
+    protected $table = "roles";
 
-    protected static $primary_key = "id";
+    protected $primary_key = "id";
 }

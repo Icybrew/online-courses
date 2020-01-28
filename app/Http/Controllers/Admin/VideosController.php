@@ -16,7 +16,7 @@ class VideosController extends Controller
 {
     public function index()
     {
-        $videos = CourseVideo::select('*')->join('courses', 'courses.id', '=', 'course_videos.course_id')->getAll();
+        $videos = CourseVideo::select('*')->join('courses', 'courses.id', '=', 'course_videos.course_id')->all();
         return view('admin/videos/index', ['videos' => $videos]);
     }
 

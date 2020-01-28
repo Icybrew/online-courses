@@ -38,7 +38,7 @@ class CoursesController extends Controller
         $course = Course::find($id);
 
         if (!empty($course)) {
-            $course->videos = CourseVideo::where('course_id', '=', $course->id)->getAll();
+            $course->videos = CourseVideo::where('course_id', '=', $course->id)->all();
             return view('admin/courses/edit', ['course' => $course]);
         } else {
             return view('errors/error404');
@@ -104,14 +104,16 @@ class CoursesController extends Controller
 
         $course = Course::find($id);
 
-        $file_destination = __DIR__ . '/../../../../public/images/courses/';
-        $file_name = date('Y-m-d_H-i-s') . '.' . pathinfo($cover_image->getClientOriginalName(), PATHINFO_EXTENSION);
+        if (isset($cover_image)) {
+            $file_destination = __DIR__ . '/../../../../public/images/courses/';
+            $file_name = date('Y-m-d_H-i-s') . '.' . pathinfo($cover_image->getClientOriginalName(), PATHINFO_EXTENSION);
 
-        if ($cover_image) {
-            $upload_result = move_uploaded_file($cover_image->getPathName(), $file_destination . $file_name);
+            if ($cover_image) {
+                $upload_result = move_uploaded_file($cover_image->getPathName(), $file_destination . $file_name);
 
-            if ($upload_result != true) {
-                return redirect()->back()->withErrors(['error' => 'Nepavyko įkelti paveikslėlio']);
+                if ($upload_result != true) {
+                    return redirect()->back()->withErrors(['error' => 'Nepavyko įkelti paveikslėlio']);
+                }
             }
         }
 

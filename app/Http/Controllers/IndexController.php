@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Core\Facades\DB;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Course;
@@ -17,12 +18,12 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $courses = Course::where('public', '=', 1)->getAll();
+        $courses = Course::where('public', '=', 1)->all();
 
         $user = $request->getSession()->get('user');
 
         if (!is_null($user)) {
-            $userOrders = Order::where('user_id', '=', $user->id)->getAll();
+            $userOrders = Order::where('user_id', '=', $user->id)->all();
 
             array_walk($courses, function ($course) use ($userOrders) {
                 $purchased = current(array_filter($userOrders, function ($userCourse) use ($course) {

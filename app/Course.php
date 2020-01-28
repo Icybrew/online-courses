@@ -10,7 +10,7 @@ use App\Core\Database\Model;
  */
 class Course extends Model
 {
-    protected static $table = "courses";
+    protected $table = "courses";
 
-    protected static $primary_key = "id";
+    protected $primary_key = "id";
 }
