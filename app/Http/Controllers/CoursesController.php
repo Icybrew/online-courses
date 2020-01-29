@@ -139,17 +139,21 @@ class CoursesController extends Controller
                 ->where('course_id', '=', $course->id)
                 ->get();
 
-            if (!empty($order)) {
-                return redirect()->route('courses.show', ['course' => $course->id]);
-            }
-
             $price = isset($course->price_discount) ? $course->price_discount : $course->price;
 
-            $order_id = Order::insert([
-                'user_id' => $user->id,
-                'course_id' => $course->id,
-                'price' => $price
-            ]);
+            if (!empty($order)) {
+                if ($order->completed == '1') {
+                    return redirect()->route('courses.show', ['course' => $course->id]);
+                } else {
+                    $order_id = $order->id;
+                }
+            } else {
+                $order_id = Order::insert([
+                    'user_id' => $user->id,
+                    'course_id' => $course->id,
+                    'price' => $price
+                ]);
+            }
 
             if ($order_id) {
                 require_once __DIR__ . '/../../Core/paysera/includes.php';
@@ -261,7 +265,7 @@ class CoursesController extends Controller
                             'completed' => 1
                         ]);
 
-                        return  'OK';
+                        return 'OK';
                     }
 
                 } else {
