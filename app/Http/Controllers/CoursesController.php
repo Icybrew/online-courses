@@ -27,7 +27,7 @@ class CoursesController extends Controller
         $user = $request->getSession()->get('user');
 
         if (!is_null($user)) {
-            $userOrders = Order::where('user_id', '=', $user->id)->all();
+            $userOrders = Order::where('user_id', '=', $user->id)->where('completed', '=', '1')->all();
 
             array_walk($this->courses, function ($course) use ($userOrders) {
                 $purchased = current(array_filter($userOrders, function ($userCourse) use ($course) {
