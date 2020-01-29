@@ -18,6 +18,7 @@ Router::get('/profile', 'ProfileController@index')->name('profile.index')->middl
 Router::get('/profile/change-password', 'ProfileController@editPassword')->name('profile.edit.password')->middleware('auth');
 Router::patch('/profile/change-password', 'ProfileController@updatePassword')->name('profile.update.password')->middleware('auth');
 Router::get('/profile/purchases', 'ProfileController@purchases')->name('profile.purchases')->middleware('auth');
+Router::get('/profile/purchases/{purchase}', 'ProfileController@purchaseShow')->name('profile.purchases.show')->middleware('auth');
 
 /* Index */
 Router::get("", "IndexController@index")->name('home');

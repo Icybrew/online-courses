@@ -38,7 +38,7 @@
                             <td><a href="{{ route('courses.show', {'course' : purchase.course_id}) }}" class="text-dark">{{ purchase.name }}</a></td>
                             <td>{{ purchase.price }} EUR</td>
                             <td>{{ purchase.created_at }}</td>
-                            <td><a href="#"><button class="btn btn-outline-info">PDF</button></a></td>
+                            <td><a href="{{ route('profile.purchases.show', {'purchase' : purchase.id}) }}"><button class="btn btn-outline-info">PDF</button></a></td>
                         </tr>
                         {% endfor %}
                         </tbody>
