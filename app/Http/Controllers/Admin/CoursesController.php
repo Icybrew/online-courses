@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\CourseVideo;
 use App\Http\Controllers\Controller;
 use App\Services\Youtube;
+use League\OAuth2\Client\Provider\Google;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Course;
@@ -38,7 +39,7 @@ class CoursesController extends Controller
         $course = Course::find($id);
 
         if (!empty($course)) {
-            $course->videos = CourseVideo::where('course_id', '=', $course->id)->all();
+            $course->videos = CourseVideo::where('course_id', '=', $course->id)->orderBy('video_order', 'ASC')->all();
             return view('admin/courses/edit', ['course' => $course]);
         } else {
             return view('errors/error404');
@@ -140,15 +141,47 @@ class CoursesController extends Controller
 
     }
 
-    public function create()
+    public function create(Request $request, Google $google)
     {
+        $user = $request->getSession()->get('user');
 
-        $youtube = new Youtube('s');
+        if (!isset($user->google)) {
+            return redirect()->route('admin.google.authorize');
+        }
 
-        dd($youtube->get_MY_ChannelVideos());
+        //$youtube = new Youtube($user->google->getToken());
+
+        try {
+            //$videos = $youtube->get_MY_ChannelVideos();
+        } catch (\Exception $exception) {
+            if ($exception->getCode() == 401) {
+                return redirect()->route('admin.google.authorize');
+            }
+            dd($exception->getMessage());
+        }
+
+        $videos = [];
+
+        $links = ['http://i3.ytimg.com/vi/T91p6pTPpSY/maxresdefault.jpg' => 'T91p6pTPpSY', 'http://i3.ytimg.com/vi/wY2zyhDgeto/maxresdefault.jpg' => 'wY2zyhDgeto', 'http://i3.ytimg.com/vi/Xw2bTpyHGCE/maxresdefault.jpg' => 'Xw2bTpyHGCE', 'http://i3.ytimg.com/vi/kQI6z3Rsf98/maxresdefault.jpg' => 'kQI6z3Rsf98'];
+
+        for ($i = 0; $i < 4; $i++) {
+            $video = new \stdClass();
+            $video->snippet = new \stdClass();
+            $video->snippet->thumbnails = new \stdClass();
+            $video->snippet->thumbnails->medium = new \stdClass();
+
+
+//            $video->snippet->thumbnails->medium->url = 'https://i.ytimg.com/vi/kQI6z3Rsf98/mqdefault.jpg';
+            $video->snippet->thumbnails->medium->url = key($links);
+            $video->snippet->title = array_shift($links);
+            $videos[] = $video;
+        }
+
+        //dc($videos);
+
         //dd($youtube->getVideoInfo('rie-hPVJ7Sw'));
 
-        return view('admin/courses/create');
+        return view('admin/courses/create', ['videos' => $videos]);
     }
 
     public function store(Request $request)
@@ -160,7 +193,7 @@ class CoursesController extends Controller
         $price_discounted = $request->request->get('price_discounted');
         $price_discounted_expires = $request->request->get('price_discounted_expires');
         $isPublic = $request->request->get('isPublic');
-        $videos = $request->request->get('videos');
+        $videos = $request->request->get('videos', []);
 
         $allowed_file_types = [
             'image/png',
@@ -202,6 +235,10 @@ class CoursesController extends Controller
             $errors['price_discounted_expires'] = 'Neivesta nuolaidos galiojimo data';
         }
 
+        if (count($videos) == 0) {
+            $errors['videos'] = 'Nepasirinkote video';
+        }
+
         if (count($errors) > 0) {
             return redirect()->back()->withInput()->withErrors($errors);
         }
@@ -213,10 +250,10 @@ class CoursesController extends Controller
         $upload_result = move_uploaded_file($cover_image->getPathName(), $file_destination . $file_name);
 
         if ($upload_result != true) {
-            return redirect()->back()->withErrors(['error' => 'Nepavyko įkelti paveikslėlio']);
+            return redirect()->route('admin.courses.create')->withErrors(['error' => 'Nepavyko įkelti paveikslėlio']);
         }
 
-        $result = Course::insert([
+        $course_id = Course::insert([
             'owner_id' => $user->id,
             'name' => $title,
             'description' => $description,
@@ -227,7 +264,15 @@ class CoursesController extends Controller
             'public' => isset($isPublic) ? 1 : 0
         ]);
 
-        return redirect()->route('admin.courses.show', ['course' => $result])->with(['success' => 'Kursas sukurtas']);
+        foreach ($videos as $order => $video) {
+            CourseVideo::insert([
+                'course_id' => $course_id,
+                'video_id' => $video,
+                'video_order' => $order
+            ]);
+        }
+
+        return redirect()->route('admin.courses.show', ['course' => $course_id])->with(['success' => 'Kursas sukurtas']);
     }
 
     public function delete(Request $request, $id)

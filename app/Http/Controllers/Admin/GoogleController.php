@@ -23,7 +23,7 @@ class GoogleController extends Controller
             return redirect()->route('admin.index')->withErrors(['error' => htmlspecialchars($_GET['error'], ENT_QUOTES, 'UTF-8')]);
         } elseif (empty($_GET['code'])) {
 
-            if (!isset($user->google)) {
+            if (!isset($user->google) || (isset($user->google) && date('Y-m-d H:i:s', $user->google->getExpires()) < date('Y-m-d H:i:s'))) {
                 // If we don't have an authorization code then get one
                 $authUrl = $google->getAuthorizationUrl();
                 $_SESSION['oauth2state'] = $google->getState();
