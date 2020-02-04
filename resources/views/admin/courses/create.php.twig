@@ -7,93 +7,100 @@
         {{ include('components/error.html.twig') }}
 
         <div class="row">
-            <div class="col-9">
-                <form action="{{ route('admin.courses.store') }}" method="post" class="col-7 text-nowrap" enctype="multipart/form-data">
-                    {{ csrf() }}
-                    {{ method('PUT') }}
-                    <div class="form-group">
-                        <label for="courseName">Kurso pavadinimas</label>
-                        <input type="text" class="form-control{{ error('title') ? ' is-invalid' }}" name="title" value="{{ old('title') }}" id="courseName" placeholder="Pavadinimas">
-                        {% if error('title') %}
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ error('title') }}</strong>
-                            </span>
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label for="courseDescription">Aprašymas</label>
-                        <textarea class="form-control{{ error('description') ? ' is-invalid' }}" name="description" id="courseDescription" rows="5">{{ old('description') }}</textarea>
-                        {% if error('description') %}
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ error('description') }}</strong>
-                            </span>
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label for="courseCoverImage">Cover paveiksliukas</label>
-                        <input type="file" class="form-control-file{{ error('cover_image') ? ' is-invalid' }}" name="cover_image" value="{{ old('cover_image') }}" id="inputCoverImage">
-                        <img src="" class="img-fluid d-block" id="inputCoverImagePreview">
-                        {% if error('cover_image') %}
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ error('cover_image') }}</strong>
-                            </span>
-                        {% endif %}
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="coursePrice">Kaina</label>
-                            <input type="number" class="form-control{{ error('price') ? ' is-invalid' }}" name="price" value="{{ old('price') }}" id="coursePrice" step="0.01">
-                            {% if error('price') %}
+            <form action="{{ route('admin.courses.store') }}" method="post" class="col-12 text-nowrap" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-6">
+                        {{ csrf() }}
+                        {{ method('PUT') }}
+                        <div class="form-group">
+                            <label for="courseName">Kurso pavadinimas</label>
+                            <input type="text" class="form-control{{ error('title') ? ' is-invalid' }}" name="title" value="{{ old('title') }}" id="courseName" placeholder="Pavadinimas">
+                            {% if error('title') %}
                                 <span class="invalid-feedback" role="alert">
-                                <strong>{{ error('price') }}</strong>
-                            </span>
+                                    <strong>{{ error('title') }}</strong>
+                                </span>
                             {% endif %}
                         </div>
-                        <div class="col-4">
-                            <label for="courseDiscountPrice">Kaina su nuolaida</label>
-                            <input type="number" class="form-control{{ error('price_discounted') ? ' is-invalid' }}" name="price_discounted" value="{{ old('price_discounted') }}" id="courseDiscountPrice" step="0.01">
-                            {% if error('price_discounted') %}
+                        <div class="form-group">
+                            <label for="courseDescription">Aprašymas</label>
+                            <textarea class="form-control{{ error('description') ? ' is-invalid' }}" name="description" id="courseDescription" rows="5">{{ old('description') }}</textarea>
+                            {% if error('description') %}
                                 <span class="invalid-feedback" role="alert">
-                                <strong>{{ error('price_discounted') }}</strong>
-                            </span>
+                                    <strong>{{ error('description') }}</strong>
+                                </span>
                             {% endif %}
                         </div>
-                        <div class="col-4">
-                            <label for="courseDiscountExpireDate">Galioja iki:</label>
-                            <input type="date" class="form-control{{ error('price_discounted_expires') ? ' is-invalid' }}" name="price_discounted_expires" value="{{ old('price_discounted_expires') ? old('price_discounted_expires')|date('Y-m-d') }}" id="courseDiscountExpireDate" step="0.01">
+                        <div class="form-group">
+                            <label for="courseCoverImage">Cover paveiksliukas</label>
+                            <input type="file" class="form-control-file{{ error('cover_image') ? ' is-invalid' }}" name="cover_image" value="{{ old('cover_image') }}" id="inputCoverImage">
+                            <img src="" class="img-fluid d-block" id="inputCoverImagePreview">
+                            {% if error('cover_image') %}
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ error('cover_image') }}</strong>
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="coursePrice">Kaina</label>
+                                <input type="number" class="form-control{{ error('price') ? ' is-invalid' }}" name="price" value="{{ old('price') }}" id="coursePrice" step="0.01">
+                                {% if error('price') %}
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ error('price') }}</strong>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="col-4">
+                                <label for="courseDiscountPrice">Kaina su nuolaida</label>
+                                <input type="number" class="form-control{{ error('price_discounted') ? ' is-invalid' }}" name="price_discounted" value="{{ old('price_discounted') }}" id="courseDiscountPrice" step="0.01">
+                                {% if error('price_discounted') %}
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ error('price_discounted') }}</strong>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="col-4">
+                                <label for="courseDiscountExpireDate">Galioja iki:</label>
+                                <input type="date" class="form-control{{ error('price_discounted_expires') ? ' is-invalid' }}" name="price_discounted_expires" value="{{ old('price_discounted_expires') ? old('price_discounted_expires')|date('Y-m-d') }}" id="courseDiscountExpireDate" step="0.01">
+                            </div>
+                        </div>
+                        <div class="mt-3 mb-5 custom-control custom-switch">
+                            <input type="checkbox" name="isPublic" class="custom-control-input" id="coursePrivate"{{ old('isPublic') ? ' checked' }}>
+                            <label class="custom-control-label" for="coursePrivate">Rodyti pagrindiniame puslapyje</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Skelbti</button>
+                    </div>
+                    <div class="col-6">
+                        <div class="col-8 mx-auto p-0 text-center d-flex flex-column align-items-center" data-select="videos">
+                            <h4 class="text-center">Kurso vaizdo įrašai</h4>
+                            {% if error('videos') %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error('videos') }}
+                                </div>
+                            {% endif %}
+                            <select id="videos" name="videos[]" class="d-none border border-warning overflow-hidden" multiple="multiple">
+                            </select>
+                            <div class="draggable-drop-container" data-select="videos"></div>
                         </div>
                     </div>
-                    <div class="mt-3 mb-5 custom-control custom-switch">
-                        <input type="checkbox" name="isPublic" class="custom-control-input" id="coursePrivate"{{ old('isPublic') ? ' checked' }}>
-                        <label class="custom-control-label" for="coursePrivate">Rodyti pagrindiniame puslapyje</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Skelbti</button>
-                </form>
-            </div>
-            <div class="col-3 border draggable-container">
-                <h4 class="text-center">Kurso vaizdo įrašai</h4>
-                <div class="draggable-drop-container">
-                    <div class="draggable" draggable="true">1</div>
                 </div>
-                <div class="draggable-drop-container"></div>
-                <div class="draggable-drop-container"></div>
-                <div class="draggable-drop-container"></div>
-            </div>
+            </form>
         </div>
-        <div class="row my-5 border">
-            <h1 class="col-12 border-danger border-bottom py-2">Youtube vaizdo įrašai:</h1>
-            <div class="col-12 border border-success">
+    </div>
+    <div class="container-fluid col-10 my-5 border">
+        <h1 class="col-12 border-danger border-bottom py-2">Youtube vaizdo įrašai:</h1>
+        <div class="col-12">
 
-                <div class="row draggable-container">
-                    <div class="draggable-drop-container">
-                        <div class="draggable" draggable="true">2</div>
+            <div class="row mb-3">
+                {% for video in videos %}
+                    <div class="col-4 mb-3 draggable-drop-container">
+                        <div class="draggable" data-value="{{ video.snippet.title }}" draggable="true">
+                            <img src="{{ video.snippet.thumbnails.medium.url }}" class="img-fluid" alt="{{ video.snippet.title }}">
+                        </div>
                     </div>
-                    <div class="draggable-drop-container"></div>
-                    <div class="draggable-drop-container"></div>
-                    <div class="draggable-drop-container"></div>
-                </div>
-
+                {% endfor %}
             </div>
+
         </div>
     </div>
 {% endblock %}

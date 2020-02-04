@@ -119,23 +119,20 @@ body {
 
 .draggable-drop-container {
   display: block;
-  height: 160px;
-  width: 160px;
-  border: 1px solid red;
+  min-height: 120px;
+  min-width: 160px;
+  //background-color: gainsboro;
 }
 
 .draggable {
-  background-color: green;
-  position: relative;
-  height: 150px;
-  width: 150px;
-  top: 5px;
-  left: 5px;
+  //background-color: green;
+  //min-height: 160px;
+  //min-width: 320px;
   cursor: pointer;
 }
 
 .hold {
-  border: solid #ccc 4px;
+  border: solid #ccc 5px;
 }
 
 .hovered {
@@ -144,7 +141,7 @@ body {
 }
 
 .invisible {
-  display: none;
+  //display: none;
 }
 
 
