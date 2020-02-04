@@ -165,6 +165,7 @@ class CoursesController extends Controller
                     'accepturl' => route('courses.purchase.accept', ['course' => $course->id]),
                     'cancelurl' => route('courses.purchase.cancel', ['course' => $course->id]),
                     'callbackurl' => route('courses.purchase.callback', ['course' => $course->id]),
+                    'p_email' => $user->email,
                     'payment' => $paymentMethod,
                     'amount' => $price * 100,
                     'currency' => 'EUR',
