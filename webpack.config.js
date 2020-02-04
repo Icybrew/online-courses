@@ -1,5 +1,6 @@
 const path = require('path');
-const glob = require('glob')
+const glob = require('glob');
+const webpack = require('webpack');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
@@ -25,9 +26,16 @@ module.exports = {
             chunkFilename: '[id].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery'",
+            "window.$": "jquery"
+        }),
         // new PurgecssPlugin({
         //     paths: glob.sync(`${PATHS.src}/**`, {nodir: true}),
         // }),
+
     ],
     module: {
         rules: [
@@ -44,6 +52,15 @@ module.exports = {
                     'sass-loader'
                 ],
             },
+            {
+                test: /\.(jpe?g|png|gif)$/i,
+                loader:"file-loader",
+                options:{
+                    name:'[name].[ext]',
+                    outputPath:'images/'
+                    //the images will be emited to dist/assets/images/ folder
+                }
+            }
         ],
     },
 };
